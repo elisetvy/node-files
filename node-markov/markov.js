@@ -27,6 +27,8 @@ class MarkovMachine {
   getChains() {
 
     const chains = {};
+    //TODO: const over let
+    //short circuit: this.words[i+1] || null
     for (let i = 0; i < this.words.length; i++){
       let currWord = this.words[i];
       let nextWord = (i < this.words.length-1) ? this.words[i+1] : null;
@@ -44,6 +46,7 @@ class MarkovMachine {
 
   /** Return random text from chains, starting at the first word and continuing
    *  until it hits a null choice. */
+  //TODO: separation of concerns: could have a 'get random item from array' function.
   getText() {
     // - start at the first word in the input text
     // - find a random word from the following-words of that
@@ -70,11 +73,9 @@ class MarkovMachine {
 const fsP = require('fs/promises');
 const paths = ['./cummings.txt', './eggs.txt', './gettysburg.txt'];
 
-
-
 /** Takes in a file path, awaits the readFile command and returns text as String */
 async function readFiles(path){
-  const text = await fsP.readFile(path, "utf8");
+  const text = await fsP.readFile(path, "utf8"); //TODO: return await.
   return text;
 }
 
