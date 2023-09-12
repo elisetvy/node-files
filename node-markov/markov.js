@@ -46,7 +46,7 @@ class MarkovMachine {
   /** Return random text from chains, starting at the first word and continuing
    *  until it hits a null choice. */
   //TODO: separation of concerns: could have a 'get random item from array' function.
-  getText() {
+  getText(limit=false) {
     // - start at the first word in the input text
     // - find a random word from the following-words of that
     // - repeat until reaching the terminal null
@@ -64,9 +64,41 @@ class MarkovMachine {
       }
     }
 
-    return text.join(' ');
+    if (limit){
+      return text.slice(0,limit).join(' ');
+    } else {
+      return text.join(' ');
+    }
   }
 }
+
+
+
+class MarkovBigram extends MarkovMachine {
+  constructor(text){
+    super(text);
+    this.bigramChains = this.getBigramChains();
+  }
+
+  getBigramChains(){
+    const chains = {};
+
+    for (let i = 0; i < this.words.length - 1; i++){
+      const currWords = this.words[i] + ' ' + this.words[i+1];
+      const nextWord = this.words[i+2] || null;
+
+      if (currWords in chains){
+        chains[currWords].push(nextWord);
+      } else {
+        chains[currWords] = [nextWord];
+      }
+    }
+    return chains;
+  }
+}
+
+
+
 
 
 const fsP = require('fs/promises');
@@ -92,15 +124,20 @@ async function handleMarkovTests(){
   let testMarkovChain;
   for (let i = 0; i < 4; i++){
     console.log('text ', i);
-    testMarkovChain = testMarkov.getText();
+    testMarkovChain = testMarkov.getText(20);
     console.log(testMarkovChain)
-    console.log('\n\n\n\n\n');
+    console.log('\n\n\n');
 
   }
 
 }
 
 
-// handleMarkovTests();
+//handleMarkovTests();
 
 module.exports = { MarkovMachine, readFiles }
+
+
+let markovBiTest = new MarkovBigram("the cat in the hat is in the hat");
+
+console.log("new bigram chains are: ", markovBiTest.bigramChains)
