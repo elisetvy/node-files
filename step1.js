@@ -1,6 +1,6 @@
 "use strict";
-const path = process.argv[2];
 const fsP = require("fs/promises");
+const path = process.argv[2];
 
 /***
  * Takes in path and prints contents or prints error and stops script.

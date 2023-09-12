@@ -1,6 +1,6 @@
 "use strict";
-const path = process.argv[2];
 const fsP = require("fs/promises");
+const path = process.argv[2];
 
 /***
  * Takes in path and prints contents or prints error and stops script.
@@ -21,14 +21,17 @@ async function cat(path) {
  */
 
 async function webCat(url) {
+  let response;
+
   try {
-    const response = await fetch(url);
-    const html = await response.text();
-    console.log(html);
+    response = await fetch(url);
   } catch (err) {
     console.log(err.message);
     process.exit(1)
   }
+
+  const html = await response.text();
+  console.log(html);
 }
 
 const isURL = URL.canParse(path);
