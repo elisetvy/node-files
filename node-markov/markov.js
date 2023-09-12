@@ -80,6 +80,10 @@ class MarkovBigram extends MarkovMachine {
     this.bigramChains = this.getBigramChains();
   }
 
+  /**
+   * Makes chains with bigrams (2 words at a time are used for chain keys)
+   * values are still next word.
+   */
   getBigramChains(){
     const chains = {};
 
