@@ -27,11 +27,10 @@ class MarkovMachine {
   getChains() {
 
     const chains = {};
-    //TODO: const over let
-    //short circuit: this.words[i+1] || null
+
     for (let i = 0; i < this.words.length; i++){
-      let currWord = this.words[i];
-      let nextWord = (i < this.words.length-1) ? this.words[i+1] : null;
+      const currWord = this.words[i];
+      const nextWord = this.words[i+1] || null;
 
       if (currWord in chains){
         chains[currWord].push(nextWord);
@@ -75,8 +74,7 @@ const paths = ['./cummings.txt', './eggs.txt', './gettysburg.txt'];
 
 /** Takes in a file path, awaits the readFile command and returns text as String */
 async function readFiles(path){
-  const text = await fsP.readFile(path, "utf8"); //TODO: return await.
-  return text;
+  return await fsP.readFile(path, "utf8");
 }
 
 /**
@@ -91,11 +89,11 @@ async function handleMarkovTests(){
 
   const testMarkov = new MarkovMachine(text);
 
-  let testWeirdText;
+  let testMarkovChain;
   for (let i = 0; i < 4; i++){
     console.log('text ', i);
-    testWeirdText = testMarkov.getText();
-    console.log(testWeirdText)
+    testMarkovChain = testMarkov.getText();
+    console.log(testMarkovChain)
     console.log('\n\n\n\n\n');
 
   }
@@ -103,4 +101,6 @@ async function handleMarkovTests(){
 }
 
 
-handleMarkovTests();
+// handleMarkovTests();
+
+module.exports = { MarkovMachine, readFiles }
